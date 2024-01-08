@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { login } from '../api';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -15,11 +16,22 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const user = await login(credentials);
-    // Save the user data in the local storage
-    localStorage.setItem('user', JSON.stringify(user));
-    // Redirect to the home page
-    navigate('/');
+    try {
+      const user = await login(credentials);
+      // Save the user data in the local storage
+      localStorage.setItem('user', JSON.stringify(user));
+      // Redirect to the home page
+      navigate('/');
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Username Dan Password Salah',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    }
   };
 
   const handleRegister = () => {
@@ -29,6 +41,13 @@ export default function Login() {
     <div className="container">
       <div className="row mt-5">
         <div className="col-md-6 shadow mx-auto p-5">
+          <h2
+            className="text-center mb-4"
+            style={{ color: '#3F51B5', fontWeight: 'bold' }}
+          >
+            Login
+          </h2>
+
           <form onSubmit={handleSubmit}>
             <div class="mb-3">
               <input

@@ -10,41 +10,57 @@ import PrivateRoute from './PrivateRoute';
 import Register from './auth/Register'; // Import the Register component
 
 import Login from './auth/Login';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 
+function Main() {
+  const location = useLocation();
+  const showNavbar =
+    location.pathname !== '/login' && location.pathname !== '/register';
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add-ticket"
+          element={
+            <PrivateRoute>
+              <AddTicket />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-ticket/:id"
+          element={
+            <PrivateRoute>
+              <EditTicket />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </>
+  );
+}
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Home />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/add-ticket"
-            element={
-              <PrivateRoute>
-                <AddTicket />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/edit-ticket/:id"
-            element={
-              <PrivateRoute>
-                <EditTicket />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
+        <Main />
       </Router>
     </div>
   );

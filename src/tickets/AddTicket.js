@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addTicket } from '../api';
+import Swal from 'sweetalert2';
 
 export default function AddTicket() {
   const navigate = useNavigate();
@@ -17,8 +18,23 @@ export default function AddTicket() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { buyer_name, buyer_phone, buyer_email, concert_name } = ticket;
+    if (!buyer_name || !buyer_phone || !buyer_email || !concert_name) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Semua Data Harus DiIsi',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
     if (buyer_name && buyer_phone && buyer_email && concert_name) {
       await addTicket(ticket);
+      Swal.fire({
+        title: 'Success!',
+        text: 'Data Berhasil Ditambahkan',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
       navigate('/');
     }
   };

@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from 'react';
-import axios from 'axios';
 import { deleteTicket, loadTickets } from '../api';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';

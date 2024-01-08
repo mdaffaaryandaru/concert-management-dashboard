@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { updateTicket } from '../api';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { getTicketById } from '../api';
 
 export default function EditTicket() {
   const navigate = useNavigate();
@@ -13,15 +14,18 @@ export default function EditTicket() {
     concert_name: '',
   });
   useEffect(() => {
-    // Load the ticket data from the server here
-  }, []);
+    const fetchTicket = async () => {
+      const data = await getTicketById(id);
+      setTicket(data);
+    };
+    fetchTicket();
+  }, [id]);
   const handleChange = (e) => {
     setTicket({ ...ticket, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const result = await Swal.fire({
       title: 'Apa Kamu Yakin Ingin Mengupdate data ini?',
       text: 'Anda tidak akan bisa mengembalikan data ini!',
@@ -32,7 +36,7 @@ export default function EditTicket() {
     });
 
     if (result.value) {
-      const data = await updateTicket(id, ticket);
+      await updateTicket(id, ticket);
       Swal.fire('Updated!', 'Tiket Anda Berhasil Di Update.', 'success');
       navigate('/');
     } else if (result.dismiss === Swal.DismissReason.cancel) {

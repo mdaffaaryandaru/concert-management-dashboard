@@ -32,6 +32,15 @@ export const updateTicket = async (id, updatedTicket, token) => {
   return response.data;
 };
 
+export const getTicketById = async (id, token) => {
+  const response = await api.get(`/ticket/getById/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const deleteTicket = async (id, token) => {
   const response = await api.delete(`/ticket/delete/${id}`, {
     headers: {

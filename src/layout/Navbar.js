@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('/login');
+  };
   return (
     <nav
       className="navbar navbar-expand-lg bg-body-tertiary"
@@ -24,23 +30,13 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Features
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Pricing
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
-        <button type="button" class="btn btn-danger ">
+        <button type="button" class="btn btn-danger " onClick={handleLogout}>
           logout
         </button>
       </div>
