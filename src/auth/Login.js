@@ -18,10 +18,8 @@ export default function Login() {
     event.preventDefault();
     try {
       const user = await login(credentials);
-      // Save the user data in the local storage
       localStorage.setItem('user', JSON.stringify(user));
-      // Redirect to the home page
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       if (error.response && error.response.status === 401) {
         Swal.fire({

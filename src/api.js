@@ -14,6 +14,16 @@ export const loadTickets = async (token) => {
   return response.data;
 };
 
+export const getAllMaster = async (token) => {
+  const response = await api.get('/master/getAllMaster', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
 export const addTicket = async (newTicket, token) => {
   const response = await api.post('/ticket/create', newTicket, {
     headers: {

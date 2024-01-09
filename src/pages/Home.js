@@ -90,6 +90,7 @@ export default function Home() {
               <th scope="col">No Telefon</th>
               <th scope="col">Email</th>
               <th scope="col">Nama Konser</th>
+              <th scope="col">Category</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -101,6 +102,7 @@ export default function Home() {
                 <td>{ticket.buyer_phone}</td>
                 <td>{ticket.buyer_email}</td>
                 <td>{ticket.concert_name}</td>
+                <td>{ticket.category}</td>
                 <td>
                   <Link
                     className="btn btn-warning mx-2"

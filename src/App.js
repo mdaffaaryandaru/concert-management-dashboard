@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import AddTicket from './tickets/AddTicket';
 import EditTicket from './tickets/EditTicket';
 import PrivateRoute from './PrivateRoute';
-import Register from './auth/Register'; // Import the Register component
+import Register from './auth/Register';
 
 import Login from './auth/Login';
 import {
@@ -20,7 +20,7 @@ import {
 function Main() {
   const location = useLocation();
   const showNavbar =
-    location.pathname !== '/login' && location.pathname !== '/register';
+    location.pathname !== '/' && location.pathname !== '/register';
 
   return (
     <>
@@ -28,8 +28,9 @@ function Main() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Login />} />
         <Route
-          path="/"
+          path="/home"
           element={
             <PrivateRoute>
               <Home />

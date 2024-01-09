@@ -32,7 +32,7 @@ export default function Register() {
       confirmButtonText: 'OK',
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/login');
+        navigate('/');
       }
     });
   };

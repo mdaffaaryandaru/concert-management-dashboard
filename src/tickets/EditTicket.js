@@ -2,26 +2,51 @@ import React, { useEffect, useState } from 'react';
 import { updateTicket } from '../api';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { getTicketById } from '../api';
+import { getTicketById, getAllMaster } from '../api';
 
 export default function EditTicket() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [master, setMaster] = useState([]);
   const [ticket, setTicket] = useState({
     buyer_name: '',
     buyer_phone: '',
     buyer_email: '',
     concert_name: '',
+    category: '',
   });
   useEffect(() => {
+    const fetchMaster = async () => {
+      const data = await getAllMaster();
+      setMaster(data);
+    };
+
     const fetchTicket = async () => {
       const data = await getTicketById(id);
       setTicket(data);
     };
+
+    fetchMaster();
     fetchTicket();
   }, [id]);
   const handleChange = (e) => {
     setTicket({ ...ticket, [e.target.name]: e.target.value });
+  };
+
+  const handleDropdownChange = (e) => {
+    const selectedBand = master.find((item) => item.band === e.target.value);
+    if (selectedBand) {
+      setTicket({ ...ticket, concert_name: selectedBand.band });
+    }
+  };
+
+  const handleCategoryChange = (e) => {
+    const selectedCategory = master.find(
+      (item) => item.category === e.target.value,
+    );
+    if (selectedCategory) {
+      setTicket({ ...ticket, category: selectedCategory.category });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -38,7 +63,7 @@ export default function EditTicket() {
     if (result.value) {
       await updateTicket(id, ticket);
       Swal.fire('Updated!', 'Tiket Anda Berhasil Di Update.', 'success');
-      navigate('/');
+      navigate('/home');
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire('Cancelled', 'Tiket Anda Aman:)', 'error');
     }
@@ -84,14 +109,32 @@ export default function EditTicket() {
               />
             </div>
             <div class="mb-3">
-              <input
+              <select
                 name="concert_name"
                 value={ticket.concert_name}
-                class="form-control"
-                placeholder="Nama Konser"
-                aria-label="Nama Konser"
-                onChange={handleChange}
-              />
+                class="form-select"
+                onChange={handleDropdownChange}
+              >
+                {master.map((item, index) => (
+                  <option key={index} value={item.band}>
+                    {item.band}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div class="mb-3">
+              <select
+                name="category"
+                value={ticket.category}
+                class="form-select"
+                onChange={handleCategoryChange}
+              >
+                {master.map((item, index) => (
+                  <option key={index} value={item.category}>
+                    {item.category}
+                  </option>
+                ))}
+              </select>
             </div>
             <button type="submit" class="btn btn-primary">
               Submit
